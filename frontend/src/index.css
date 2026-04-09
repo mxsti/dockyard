@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@theme {
+    --color-background: hsl(0 0% 75.3%);
+    --color-foreground: hsl(0 0% 0%);
+
+    --color-card: hsl(0 0% 83.1%);
+    --color-card-foreground: hsl(0 0% 0%);
+
+    --color-popover: hsl(0 0% 83.1%);
+    --color-popover-foreground: hsl(0 0% 0%);
+
+    --color-primary: hsl(220 60% 35%);
+    --color-primary-foreground: hsl(0 0% 100%);
+
+    --color-secondary: hsl(0 0% 83.1%);
+    --color-secondary-foreground: hsl(0 0% 0%);
+
+    --color-muted: hsl(0 0% 75%);
+    --color-muted-foreground: hsl(0 0% 35%);
+
+    --color-accent: hsl(220 60% 35%);
+    --color-accent-foreground: hsl(0 0% 100%);
+
+    --color-destructive: hsl(0 80% 50%);
+    --color-destructive-foreground: hsl(0 0% 100%);
+
+    --color-border: hsl(0 0% 55%);
+    --color-input: hsl(0 0% 100%);
+    --color-ring: hsl(220 60% 35%);
+
+    --color-status-running: hsl(120 60% 35%);
+    --color-status-stopped: hsl(0 0% 50%);
+    --color-status-paused: hsl(40 80% 45%);
+
+    --color-highlight: hsl(0 0% 100%);
+    --color-shadow: hsl(0 0% 40%);
+
+    --color-sidebar-background: hsl(0 0% 75.3%);
+    --color-sidebar-foreground: hsl(0 0% 0%);
+    --color-sidebar-primary: hsl(220 60% 35%);
+    --color-sidebar-primary-foreground: hsl(0 0% 100%);
+    --color-sidebar-accent: hsl(0 0% 83.1%);
+    --color-sidebar-accent-foreground: hsl(0 0% 0%);
+    --color-sidebar-border: hsl(0 0% 55%);
+    --color-sidebar-ring: hsl(220 60% 35%);
+
+    --color-chart-1: hsl(12 76% 61%);
+    --color-chart-2: hsl(173 58% 39%);
+    --color-chart-3: hsl(197 37% 24%);
+    --color-chart-4: hsl(43 74% 66%);
+    --color-chart-5: hsl(27 87% 67%);
+
+    --radius: 0px;
+}
+
+@layer base {
+    * {
+        border-color: var(--color-border);
+    }
+
+    body {
+        background-color: var(--color-background);
+        color: var(--color-foreground);
+        font-family: "Tahoma", "MS Sans Serif", "Arial", sans-serif;
+        font-size: 11px;
+        -webkit-font-smoothing: none;
+        -moz-osx-font-smoothing: unset;
+    }
+}
+
+/* Win98-style beveled panels */
+.bevel-outset {
+    border: 2px solid;
+    border-color: var(--color-highlight) var(--color-shadow) var(--color-shadow) var(--color-highlight);
+}
+
+.bevel-inset {
+    border: 2px solid;
+    border-color: var(--color-shadow) var(--color-highlight) var(--color-highlight) var(--color-shadow);
+}
+
+.win-button {
+    background: var(--color-card);
+    border: 2px solid;
+    border-color: var(--color-highlight) var(--color-shadow) var(--color-shadow) var(--color-highlight);
+    padding: 2px 12px;
+    font-family: "Tahoma", "MS Sans Serif", sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+    min-width: 75px;
+    text-align: center;
+}
+
+.win-button:active {
+    border-color: var(--color-shadow) var(--color-highlight) var(--color-highlight) var(--color-shadow);
+    padding: 3px 11px 1px 13px;
+}
+
+.win-button:disabled {
+    color: var(--color-muted-foreground);
+    cursor: not-allowed;
+}
+
+.win-titlebar {
+    background: linear-gradient(90deg, hsl(220 60% 35%), hsl(220 60% 55%));
+    color: white;
+    padding: 2px 4px;
+    font-weight: bold;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    user-select: none;
+}

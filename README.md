@@ -1,33 +1,32 @@
 <img src="dockyard-icon.png" width="300" height="300" />
 
-Webbasiertes Dashboard zur Verwaltung von Docker Containern auf dem Host.
+Web-based dashboard for managing Docker containers on the host system.
 
 ### Tech Stack
 
-- **Frontend:** React, TypeScript, ReactQuery 
+- **Frontend:** React, TypeScript, ReactQuery
 - **Backend:** Express, TypeScript, Dockerode
 
-### Voraussetzungen
+### Prerequisites
 
-- [Docker](https://docs.docker.com/get-docker/) und [Docker Compose](https://docs.docker.com/compose/install/)
-- Für lokale Entwicklung: [Node.js](https://nodejs.org/) (v22+)
+- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
+- For local development: [Node.js](https://nodejs.org/) (v22+)
 
-### Starten mit Docker Compose
+### Getting Started
 
 ```bash
 docker compose up --build
 ```
 
 ### API
-| Methode | Endpunkt                       | Beschreibung          |
-|---------|--------------------------------|-----------------------|
-| GET     | /containers                    | Alle Container listen |
-| GET     | /containers?name=foo           | Nach Name filtern     |
-| GET     | /containers?status=running     | Nach Status filtern   |
-| POST    | /containers/:containerId/start | Container starten     |
-| POST    | /containers/:containerId/stop  | Container stoppen     |
+| Method | Endpoint                       | Description            |
+|--------|--------------------------------|------------------------|
+| GET    | /containers                    | List all containers    |
+| GET    | /containers?name=foo           | Filter by name         |
+| GET    | /containers?status=running     | Filter by status       |
+| POST   | /containers/:containerId/start | Start a container      |
+| POST   | /containers/:containerId/stop  | Stop a container       |
 
+### ⚠️ Security Notice
 
-
-### ⚠️ Sicherheitshinweis
-Diese Anwendung benötigt Zugriff auf den Docker Socket (/var/run/docker.sock), um Container auf dem Host-System zu verwalten. Dadurch erhält die Anwendung vollständige Kontrolle über den Docker Daemon, was einem Root-Zugriff auf den Host entspricht.
+This application requires access to the Docker socket (`/var/run/docker.sock`) to manage containers on the host system. This grants the application full control over the Docker daemon, which is equivalent to root access on the host.

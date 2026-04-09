@@ -2,11 +2,16 @@ import Docker from "dockerode";
 
 const docker = new Docker();
 
-export async function listContainers(filters?: Record<string, string[]>): Promise<ContainerInfo[]> {
+export async function listContainers(filters?: Record<string, string>): Promise<ContainerInfo[]> {
+    const dockerFilters = filters
+        ? Object.fromEntries(Object.entries(filters).map(([k, v]) => [k, [v]]))
+        : undefined;
+
     const containers = await docker.listContainers({
         all: true,
-        filters: filters ?? undefined,
+        filters: dockerFilters ?? undefined,
     });
+
     return containers.map((container) => ({
         id: container.Id,
         name: container.Names[0],

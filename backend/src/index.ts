@@ -11,9 +11,9 @@ const PORT = 3333;
 app.use(express.json());
 
 app.get("/containers", async (req, res) => {
-    const filters: Record<string, string[]> = {};
-    if (req.query.name) filters.name = [].concat(req.query.name as any);
-    if (req.query.status) filters.status = [].concat(req.query.status as any);
+    const filters: Record<string, string> = {};
+    if (req.query.name) filters.name = req.query.name as any;
+    if (req.query.status) filters.status = req.query.status as any;
     const containers = await listContainers(filters);
     res.status(200).json(containers);
 });

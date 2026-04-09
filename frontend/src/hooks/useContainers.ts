@@ -2,11 +2,18 @@ import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query';
 import type {ContainerInfo} from "../types.ts";
 import {fetchBackend} from "../utils/api.ts";
 
-export const useGetContainers = () => {
+export const useGetContainers = (filters?: Record<string, string>) => {
     return useQuery({
-        queryKey: ['containers'],
+        queryKey: ['containers', filters],
         queryFn: async (): Promise<ContainerInfo[]> => {
-            const res = await fetchBackend("/containers");
+            const params = new URLSearchParams();
+            if (filters?.name) params.set('name', filters.name);
+            if (filters?.status) {
+                const status = filters.status === "all" ? "" : filters.status;
+                params.set('status', status);
+            }
+            const query = params.toString();
+            const res = await fetchBackend(`/containers${query ? `?${query}` : ''}`);
             return res.json();
         }
     });

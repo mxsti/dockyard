@@ -1,9 +1,13 @@
 import {useGetContainers, useStartContainer, useStopContainer} from "../hooks/useContainers.ts";
 import ContainerCard from "../components/ContainerCard.tsx";
 import {useState} from "react";
+import FilterBar, {type StatusFilter} from "../components/FilterBar.tsx";
+import useDebounce from "../hooks/useDebounce.ts";
 
 function Dashboard() {
-    const {data: containers, isLoading} = useGetContainers();
+    const [stateFilter, setStateFilter] = useState<StatusFilter> ("all");
+    const [nameFilter, setNameFilter] = useState<string> ("");
+    const {data: containers } = useGetContainers({status: stateFilter, name: useDebounce(nameFilter, 300)});
     const startContainer = useStartContainer();
     const stopContainer = useStopContainer();
     const runningContainers = containers?.filter(container => container.state === "running");
@@ -24,16 +28,13 @@ function Dashboard() {
         });
     }
 
-    if (isLoading || !containers) {
-        return <></>
-    }
-
     return (
         <div className="flex justify-center mt-4">
             <div className="w-[80%]">
-                <h1 className="text-xl">{runningContainers?.length}/{containers.length} containers running</h1>
+                <h1 className="text-2xl">{runningContainers?.length}/{containers?.length} containers running</h1>
+                <FilterBar filterByName={setNameFilter} filterByStatus={setStateFilter}/>
                 <div className="grid grid-cols-3 gap-4 mt-4">
-                    {containers.map(container => (
+                    {containers?.map(container => (
                         <ContainerCard
                             container={container}
                             toggleContainer={toggleContainer}

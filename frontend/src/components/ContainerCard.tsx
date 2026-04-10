@@ -1,4 +1,5 @@
 import type {ContainerInfo} from "../types.ts";
+import {useNavigate} from "react-router-dom";
 
 interface ContainerCardProps {
     container: ContainerInfo;
@@ -8,13 +9,15 @@ interface ContainerCardProps {
 
 export function ContainerCard({container, toggleContainer, isLoading}: ContainerCardProps) {
     const isRunning = container.state === "running";
+    const navigate = useNavigate();
 
     if (!container) {
         return <></>;
     }
 
     return (
-        <div key={container.id} className="bevel-outset bg-card p-2 text-[11px] flex flex-col">
+        <div key={container.id} className="bevel-outset bg-card p-2 text-[11px] flex flex-col cursor-pointer"
+             onClick={() => navigate(`${container.id}/logs`)}>
             <div className="mb-1.5 flex items-center">
                 <span
                     className="inline-block h-2 w-2 rounded-full"
@@ -34,9 +37,12 @@ export function ContainerCard({container, toggleContainer, isLoading}: Container
                 {container.ports.map((port) => (<p>{port[0]}:{port[1]}</p>))}
             </div>
             <button
-                className="win-button w-full mt-auto"
+                className="win-button w-full mt-auto hover:opacity-70"
                 disabled={isLoading}
-                onClick={() => toggleContainer(container.id, isRunning ? "stop" : "start")}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    toggleContainer(container.id, isRunning ? "stop" : "start")
+                }}
             >
                 {isRunning ? "Stop" : "Start"}
             </button>

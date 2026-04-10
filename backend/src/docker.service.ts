@@ -1,4 +1,5 @@
 import Docker from "dockerode";
+import {Readable} from "node:stream";
 
 const docker = new Docker();
 
@@ -32,4 +33,14 @@ export async function startContainer(containerId: string): Promise<void> {
 export async function stopContainer(containerId: string): Promise<void> {
     const container = docker.getContainer(containerId);
     await container.stop();
+}
+
+export async function getContainerLogStream(containerId: string): Promise<Readable> {
+    const container = docker.getContainer(containerId);
+    return await container.logs({
+        stdout: true,
+        stderr: true,
+        follow: true,
+        tail: 100,
+    }) as unknown as Readable;
 }

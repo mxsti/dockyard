@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import {listContainers, startContainer, stopContainer} from "./docker.service";
+import {getContainerLogStream, listContainers, startContainer, stopContainer} from "./docker.service";
 
 const app = express();
 if (process.env.NODE_ENV !== "production") {
@@ -16,6 +16,33 @@ app.get("/containers", async (req, res) => {
     if (req.query.status) filters.status = req.query.status as any;
     const containers = await listContainers(filters);
     res.status(200).json(containers);
+});
+
+app.get("/containers/:containerId/logs", async (req, res) => {
+    const stream = await getContainerLogStream(req.params.containerId);
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Connection", "keep-alive");
+
+    let remaining = Buffer.alloc(0);
+    stream.on("data", (chunk: Buffer) => {
+        let buffer = Buffer.concat([remaining, chunk]);
+        let offset = 0;
+
+        while (offset + 8 <= buffer.length) {
+            const size = buffer.readUInt32BE(offset + 4);
+            if (offset + 8 + size > buffer.length) break;
+            const content = buffer.slice(offset + 8, offset + 8 + size).toString("utf-8").trim();
+            if (content) {
+                res.write(`data: ${content}\n\n`);
+            }
+            offset += 8 + size;
+        }
+        remaining = buffer.slice(offset);
+    });
+
+    stream.on("end", () => res.end());
+    stream.on("close", () => res.end());
+    req.on("close", () => stream.destroy());
 });
 
 app.post("/containers/:containerId/start", async (req, res) => {

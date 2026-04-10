@@ -1,6 +1,7 @@
 import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query';
 import type {ContainerInfo} from "../types.ts";
 import {fetchBackend} from "../utils/api.ts";
+import {useEffect, useState} from "react";
 
 export const useGetContainers = (filters?: Record<string, string>) => {
     return useQuery({
@@ -43,4 +44,28 @@ export const useStopContainer = () => {
             queryClient.invalidateQueries({queryKey: ['containers']});
         }
     });
+};
+
+export const useContainerLogs = (containerId?: string) => {
+    const [logs, setLogs] = useState<string[]>([]);
+
+    useEffect(() => {
+        if (!containerId) return;
+
+        setLogs([]);
+        const url = `${import.meta.env.VITE_BACKEND_URL || ''}/containers/${containerId}/logs`;
+        const eventSource = new EventSource(url);
+
+        eventSource.onmessage = (e) => {
+            setLogs((prev: string[]) => [...prev, e.data]);
+        };
+
+        eventSource.onerror = () => {
+            eventSource.close();
+        };
+
+        return () => eventSource.close();
+    }, [containerId]);
+
+    return logs;
 };

@@ -22,6 +22,7 @@ export async function listContainers(filters?: Record<string, string>): Promise<
             .filter(p => p.IP !== '::') // filter out ipv6
             .map(port => [port.PrivatePort, port.PublicPort]),
         status: container.Status,
+        project: container.Labels["com.docker.compose.project"]
     }));
 }
 

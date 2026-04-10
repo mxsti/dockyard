@@ -5,6 +5,7 @@ interface ContainerInfo {
     ports: [number, number][];
     state: ContainerState;
     status: string;
+    project: string | undefined;
 }
 
 type ContainerState = "created" | "running" | "paused" | "restarting" | "exited" | "removing" | "dead";

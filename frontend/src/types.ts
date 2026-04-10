@@ -6,6 +6,7 @@ export type ContainerInfo =
         ports: [number, number][];
         state: ContainerState;
         status: string;
+        project: string | undefined;
     }
 
 

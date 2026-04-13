@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import {getContainerLogStream, listContainers, startContainer, stopContainer} from "./docker.service";
+import {errorHandler} from "./errorHandler.middleware";
 
 const app = express();
 if (process.env.NODE_ENV !== "production") {
@@ -46,23 +47,16 @@ app.get("/containers/:containerId/logs", async (req, res) => {
 });
 
 app.post("/containers/:containerId/start", async (req, res) => {
-    try {
-        await startContainer(req.params.containerId);
-        res.sendStatus(204);
-    } catch (err) {
-        res.status(404).json({error: "container not found or already running"});
-    }
+    await startContainer(req.params.containerId);
+    res.sendStatus(204);
 });
 
 app.post("/containers/:containerId/stop", async (req, res) => {
-    try {
-        await stopContainer(req.params.containerId);
-        res.sendStatus(204);
-    } catch (err) {
-        res.status(404).json({error: "container not found or already stopped"});
-    }
-})
+    await stopContainer(req.params.containerId);
+    res.sendStatus(204);
+});
 
+app.use(errorHandler);
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

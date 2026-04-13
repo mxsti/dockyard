@@ -16,7 +16,7 @@ function Dashboard() {
     const [stateFilter, setStateFilter] = useState<StatusFilter>("all");
     const [nameFilter, setNameFilter] = useState<string>("");
     const [projectFilter, setProjectFilter] = useState<string>("all");
-    const {data: containers} = useGetContainers({status: stateFilter, name: useDebounce(nameFilter, 300)});
+    const {data: containers, error} = useGetContainers({status: stateFilter, name: useDebounce(nameFilter, 300)});
     const filteredContainers = containers?.filter(container =>
         projectFilter === "all" || container.project === projectFilter
     );
@@ -42,6 +42,10 @@ function Dashboard() {
                 });
             }
         });
+    }
+
+    if (error) {
+        return <div className="text-2xl">{error.message}</div>
     }
 
     return (

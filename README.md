@@ -19,13 +19,14 @@ docker compose up --build
 ```
 
 ### API
-| Method | Endpoint                       | Description            |
-|--------|--------------------------------|------------------------|
-| GET    | /containers                    | List all containers    |
-| GET    | /containers?name=foo           | Filter by name         |
-| GET    | /containers?status=running     | Filter by status       |
-| POST   | /containers/:containerId/start | Start a container      |
-| POST   | /containers/:containerId/stop  | Stop a container       |
+| Method | Endpoint                       | Description                        |
+|--------|--------------------------------|------------------------------------|
+| GET    | /containers                    | List all containers                |
+| GET    | /containers?name=foo           | Filter by name                     |
+| GET    | /containers?status=running     | Filter by status                   |
+| GET    | /containers/:containerId/logs  | Get a stream of the container logs |
+| POST   | /containers/:containerId/start | Start a container                  |
+| POST   | /containers/:containerId/stop  | Stop a container                   |
 
 ### ⚠️ Security Notice
 
